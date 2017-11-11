@@ -160,7 +160,7 @@ void display()
     glVertex2i(xmax,ymin);
     glEnd();
 
-    glColor3f(1.0,0.0,0.0);
+    glColor3f(0.0,1.0,0.0);
     glBegin(GL_LINES);
     glVertex2i(xd1,yd1);
     glVertex2i(xd2,yd2);
@@ -172,13 +172,12 @@ void display()
 
 int main(int argc,char** argv)
 {
+    printf("Enter 'c' after giving input of the co-ordinates to clip\n\n");
     printf("Enter line co-ordinate (x1,y1) and (x2,y2):\n");
     cin>>xd1>>yd1>>xd2>>yd2;
 
-    printf("Enter clipping window co-ordinates (xmin,ymin) and (xmax,ymax):\n");
+    printf("\nEnter clipping window co-ordinates (xmin,ymin) and (xmax,ymax):\n");
     cin>>xmin>>ymin>>xmax>>ymax;
-
-
 
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
