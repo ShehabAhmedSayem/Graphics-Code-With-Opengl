@@ -1,0 +1,121 @@
+#include<windows.h>
+#include <GL/glut.h>
+#include<math.h>
+
+using namespace std;
+
+#define pi 2.0*acos(0)
+int w=300;
+double dw=40.0;
+bool c=0;
+
+GLfloat gfPosX = 0.0;
+GLfloat gfDeltaX = 0.01;
+
+void stand(){
+    glColor3f(1.0, 1.0, 1.0);
+
+    glBegin(GL_LINE_LOOP);
+
+    glVertex2i(-10,12);
+    glVertex2i(-10,-30);
+    glVertex2i(-8,-30);
+    glVertex2i(-8,-32);
+    glVertex2i(-14,-32);
+    glVertex2i(-14,-30);
+    glVertex2i(-12,-30);
+    glVertex2i(-12,12);
+
+    glEnd();
+}
+
+void Draw() {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    stand();
+
+    if(c==1){
+        glColor3f(0.0, .9, 0.0);
+        glBegin(GL_POINTS);
+        for(double i=0;i<10;i+=.1)
+        for (double x = -10; x <= 10; x += 0.01) {
+        glVertex2f(x, sin(x)+i);
+        }
+        c=0;
+    }
+    else{
+        glColor3f(0.0, .8, 0.0);
+        glBegin(GL_POINTS);
+        for(double i=0;i<10;i+=.1)
+        for (double x = -10; x <= 10; x += 0.01) {
+        glVertex2f(x, cos(x)+i);
+        }
+        c=1;
+    }
+
+    glEnd();
+
+    if(c==1){
+        glColor3f(.9, 0.0, 0.0);
+        int circle_points=100;
+        float cx=-1, cy=5, r=2.5;
+
+
+        glBegin(GL_POLYGON);
+
+        for(int i=0;i<circle_points;i++)
+        {
+            float theta=(2*pi*i)/circle_points;
+            glVertex2f(cx+r*cos(theta),cy+r*sin(theta));
+        }
+        glEnd();
+    }
+
+    else{
+        glColor3f(.8, 0.0, 0.0);
+        int circle_points=100;
+        float cx=0, cy=5, r=2.5;
+
+        glBegin(GL_POLYGON);
+
+        for(int i=0;i<circle_points;i++)
+        {
+            float theta=(2*pi*i)/circle_points;
+            glVertex2f(cx+r*cos(theta),cy+r*sin(theta));
+        }
+        glEnd();
+    }
+
+    glutSwapBuffers();
+    gfPosX += gfDeltaX;
+
+    if (gfPosX >= 1.0 || gfPosX <= 0.0) {
+        gfDeltaX = -gfDeltaX;
+    }
+}
+
+void Timer(int iUnused)
+{
+    glutPostRedisplay();
+    glutTimerFunc(200, Timer, 0);
+}
+
+void Initialize() {
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-dw,dw,-dw,dw);
+}
+
+int main(int iArgc, char** cppArgv) {
+    glutInit(&iArgc, cppArgv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowSize(600,600);
+    glutInitWindowPosition(400,100);
+    glutCreateWindow("Flag Waving");
+    Initialize();
+    glutDisplayFunc(Draw);
+    Timer(0);
+    glutMainLoop();
+    return 0;
+}
